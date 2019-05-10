@@ -26,15 +26,18 @@ import static android.media.MediaRecorder.VideoSource.CAMERA;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button button;
+    Button mbutton;
     ImageView imageView;
+    private static int GALLERY=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        mbutton = (Button) findViewById(R.id.button);
+
+        mbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPictureDialogue();
@@ -115,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
         File wallpaperDirectory = new File(
-                Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
+                Environment.getExternalStorageDirectory() + "IMAGE_DIRECTORY");
         // have the object build the directory structure, if needed.
         if (!wallpaperDirectory.exists()) {
             wallpaperDirectory.mkdirs();
