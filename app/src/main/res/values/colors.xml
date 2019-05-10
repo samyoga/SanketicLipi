@@ -3,4 +3,9 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimaryBlue">#14FDF7</color>
+    <color name="colorDarkGrey">#36374F</color>
+    <color name="colorGrey">#A1B5C0</color>
+    <color name="colorBlue">#04C2DD</color>
+    <color name="colorHand">#FEB74D</color>
 </resources>
