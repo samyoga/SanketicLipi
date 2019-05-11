@@ -82,65 +82,67 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, CAMERA);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        imageView = (ImageView) findViewById(R.id.iv);
 
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == this.RESULT_CANCELED) {
-            return;
-        }
-        if (requestCode == GALLERY) {
-            if (data != null) {
-                Uri contentURI = data.getData();
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    String path = saveImage(bitmap);
-                    Toast.makeText(MainActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-                    imageView.setImageBitmap(bitmap);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(MainActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        } else if (requestCode == CAMERA) {
-            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(thumbnail);
-            saveImage(thumbnail);
-            Toast.makeText(MainActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public String saveImage(Bitmap myBitmap) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-        File wallpaperDirectory = new File(
-                Environment.getExternalStorageDirectory() + "IMAGE_DIRECTORY");
-        // have the object build the directory structure, if needed.
-        if (!wallpaperDirectory.exists()) {
-            wallpaperDirectory.mkdirs();
-        }
-
-        try {
-            File f = new File(wallpaperDirectory, Calendar.getInstance()
-                    .getTimeInMillis() + ".jpg");
-            f.createNewFile();
-            FileOutputStream fo = new FileOutputStream(f);
-            fo.write(bytes.toByteArray());
-            MediaScannerConnection.scanFile(this,
-                    new String[]{f.getPath()},
-                    new String[]{"image/jpeg"}, null);
-            fo.close();
-            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
-
-            return f.getAbsolutePath();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return "";
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//
+//        imageView = (ImageView) findViewById(R.id.iv);
+//
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == this.RESULT_CANCELED) {
+//            return;
+//        }
+//        if (requestCode == GALLERY) {
+//            if (data != null) {
+//                Uri contentURI = data.getData();
+//                try {
+//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+//                    String path = saveImage(bitmap);
+//                    Toast.makeText(MainActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+//                    imageView.setImageBitmap(bitmap);
+//
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    Toast.makeText(MainActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//        } else if (requestCode == CAMERA) {
+//            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+//            imageView.setImageBitmap(thumbnail);
+//            saveImage(thumbnail);
+//            Toast.makeText(MainActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//    public String saveImage(Bitmap myBitmap) {
+//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+//        File wallpaperDirectory = new File(
+//                Environment.getExternalStorageDirectory() + "IMAGE_DIRECTORY");
+//        // have the object build the directory structure, if needed.
+//        if (!wallpaperDirectory.exists()) {
+//            wallpaperDirectory.mkdirs();
+//        }
+//
+//        try {
+//            File f = new File(wallpaperDirectory, Calendar.getInstance()
+//                    .getTimeInMillis() + ".jpg");
+//            f.createNewFile();
+//            FileOutputStream fo = new FileOutputStream(f);
+//            fo.write(bytes.toByteArray());
+//            MediaScannerConnection.scanFile(this,
+//                    new String[]{f.getPath()},
+//                    new String[]{"image/jpeg"}, null);
+//            fo.close();
+//            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
+//
+//            return f.getAbsolutePath();
+//        } catch (IOException e1) {
+//            e1.printStackTrace();
+//        }
+//        return "";
+//    }
 
 }

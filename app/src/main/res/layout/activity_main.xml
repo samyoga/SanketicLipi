@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,13 +11,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/colorGrey"
-        android:drawableTop="@drawable/ic_gallery"
         android:textColor="#FFFFFF"
         android:layout_gravity="center_horizontal"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/button"
         android:gravity="center"
-        android:text="Gallery" />
+        android:layout_centerInParent="true"
+        android:text="Sanketic Lipi" />
+
+    <!--
 
     <ImageView
         android:layout_width="300dp"
@@ -26,7 +28,7 @@
         android:layout_marginTop="20dp"
         android:scaleType="fitXY"
         android:src="@mipmap/ic_launcher"
-        android:id="@+id/iv"/>
+        android:id="@+id/iv"/>-->
 
 
-</LinearLayout>
+</RelativeLayout>
