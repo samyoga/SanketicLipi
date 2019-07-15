@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 //            Toast.makeText(MainActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
 //        }
 //    }
-//
+
 //    public String saveImage(Bitmap myBitmap) {
 //        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 //        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
