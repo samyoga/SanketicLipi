@@ -5,29 +5,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="@color/colorPrimary"
     tools:context=".MainActivity">
 
-    <Button
+    <TextView
+        android:id="@+id/WelcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorGrey"
-        android:textColor="#FFFFFF"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:fontFamily="sans-serif"
+        android:text="Welcome To"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24dp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/appName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/WelcomeText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="sans-serif"
+        android:text="Sanketic Lipi"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="36dp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/launcherIcon"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_below="@id/appName"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
         android:layout_gravity="center_horizontal"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/button"
         android:gravity="center"
         android:layout_centerInParent="true"
-        android:text="Sanketic Lipi" />
-
-
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:scaleType="fitXY"
-        android:src="@mipmap/ic_launcher"
-        android:id="@+id/iv"/>
-
+        android:text="Lets get started!"
+        android:layout_width="320dp"
+        android:layout_below="@id/launcherIcon"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/circular_edge_button"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp" />
 
 </RelativeLayout>

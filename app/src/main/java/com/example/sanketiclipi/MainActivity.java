@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.ParcelUuid;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -82,7 +83,11 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, CAMERA);
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        Intent intent = new Intent(MainActivity.this, ImageRecognitionActivity.class);
+        startActivity(intent);
+    }
 
 //    @Override
 //    public void onActivityResult(int requestCode, int resultCode, Intent data) {
