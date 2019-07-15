@@ -10,11 +10,20 @@
     android:background="@color/colorPrimary"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/LauncherIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="36dp"/>
+
     <TextView
         android:id="@+id/WelcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_below="@id/LauncherIcon"
         android:clickable="true"
         android:fontFamily="sans-serif"
         android:text="Welcome To"
@@ -29,20 +38,25 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/WelcomeText"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="36dp"
         android:fontFamily="sans-serif"
         android:text="Sanketic Lipi"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="36dp"
         android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/launcherIcon"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@mipmap/ic_launcher"
+    <TextView
+        android:id="@+id/WctxtNepali"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="साङ्केतिक भाषामा यहाँलाई स्वागत छ । "
         android:layout_below="@id/appName"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="36dp"
+        android:textSize="22dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:textAlignment="center"/>
 
     <Button
         android:layout_gravity="center_horizontal"
@@ -52,7 +66,7 @@
         android:layout_centerInParent="true"
         android:text="Lets get started!"
         android:layout_width="320dp"
-        android:layout_below="@id/launcherIcon"
+        android:layout_below="@id/WctxtNepali"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
