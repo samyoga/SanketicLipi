@@ -54,6 +54,7 @@ public class ImageRecognitionActivity extends AppCompatActivity {
 
         loadImageView = (ImageView) findViewById(R.id.iv);
         navigateBack = (ImageView) findViewById(R.id.navigateBack);
+        textRecognized = (TextView) findViewById(R.id.textRecognized);
 
         //to load image into imageView
         requestManager = Glide.with(ImageRecognitionActivity.this);
@@ -103,13 +104,13 @@ public class ImageRecognitionActivity extends AppCompatActivity {
 //            }
 //        });
 
-//        final Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                textToSpeech.speak(textRecognized.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
-//            }
-//        }, 800);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textToSpeech.speak(textRecognized.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
+            }
+        }, 800);
 
     }
 
