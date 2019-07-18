@@ -10,20 +10,11 @@
     android:background="@color/colorPrimary"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/LauncherIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="36dp"/>
-
     <TextView
         android:id="@+id/WelcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/LauncherIcon"
         android:clickable="true"
         android:fontFamily="sans-serif"
         android:text="Welcome To"
@@ -49,7 +40,7 @@
         android:id="@+id/WctxtNepali"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="साङ्केतिक भाषामा यहाँलाई स्वागत छ । "
+        android:text="साङ्केतिक लिपीमा यहाँलाई स्वागत छ । "
         android:layout_below="@id/appName"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="36dp"
@@ -57,6 +48,15 @@
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
         android:textAlignment="center"/>
+
+    <ImageView
+        android:id="@+id/LauncherIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:layout_below="@id/WctxtNepali"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="36dp"/>
 
     <Button
         android:layout_gravity="center_horizontal"
@@ -66,7 +66,7 @@
         android:layout_centerInParent="true"
         android:text="Lets get started!"
         android:layout_width="320dp"
-        android:layout_below="@id/WctxtNepali"
+        android:layout_below="@id/LauncherIcon"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"

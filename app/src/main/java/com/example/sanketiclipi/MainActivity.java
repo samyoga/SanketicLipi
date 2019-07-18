@@ -1,17 +1,23 @@
 package com.example.sanketiclipi;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.ParcelUuid;
 import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,12 +25,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+
+import gun0912.tedbottompicker.TedBottomPicker;
+import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 import static android.media.MediaRecorder.VideoSource.CAMERA;
 
@@ -32,8 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
     TextToSpeech textToSpeech;
     Button mbutton;
-    TextView WelcomeMessage;
+    TextView WelcomeMessage, WcTxtNepali;
     private static int GALLERY=1;
+    RequestManager requestManager;
+    Uri mSelectedImagesUri;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +62,17 @@ public class MainActivity extends AppCompatActivity {
 
         mbutton = (Button) findViewById(R.id.button);
         WelcomeMessage = (TextView) findViewById(R.id.WelcomeText);
+        WcTxtNepali = (TextView) findViewById(R.id.WctxtNepali);
+
+        requestManager = Glide.with(MainActivity.this);
+
 
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onInit(int status) {
                 if (status == TextToSpeech.SUCCESS) {
-                    int ttsLang = textToSpeech.setLanguage(Locale.US);
+                    int ttsLang = textToSpeech.setLanguage(Locale.forLanguageTag("hin"));
 
                     if (ttsLang == TextToSpeech.LANG_MISSING_DATA
                             || ttsLang == TextToSpeech.LANG_NOT_SUPPORTED) {
@@ -62,125 +87,62 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        textToSpeech.speak(WelcomeMessage.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
-
-        mbutton.setOnClickListener(new View.OnClickListener() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onClick(View v) {
-                showPictureDialogue();
+            public void run() {
+                textToSpeech.speak(WcTxtNepali.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
             }
-        });
+        }, 800);
+        startBottomPicker();
+
+
     }
 
-    private void showPictureDialogue(){
-        AlertDialog.Builder pictureDialogue = new AlertDialog.Builder(this);
-        pictureDialogue.setTitle("Select Action");
-        String[] items = {
-                "Select Image From Gallery",
-                "Select Image From Camera"
-        };
+    @AfterPermissionGranted(1)
+    public void startBottomPicker() {
+        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (EasyPermissions.hasPermissions(getApplicationContext(), perms)) {
+            mbutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TedBottomPicker.with(MainActivity.this)
+                            .setSelectedUri(mSelectedImagesUri)
+                            //.showVideoMedia()
+                            .setPeekHeight(1200)
+                            .setCompleteButtonText("DONE")
+                            .setEmptySelectionText("No photos have been selected.")
+                            .show(new TedBottomSheetDialogFragment.OnImageSelectedListener() {
+                                @Override
+                                public void onImageSelected(Uri uri) {
+                                    mSelectedImagesUri = uri;
 
-        pictureDialogue.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case 0:
-                        chooseImageFromGallery();
-                        break;
-                    case 1:
-                        takeImageFromCamera();
-                        break;
+                                    Intent intent = new Intent(MainActivity.this, ImageRecognitionActivity.class);
+                                    intent.setData(mSelectedImagesUri);
+                                    startActivity(intent);
+
+                                }
+                            });
+
+
                 }
-            }
-        });
+            });
 
-        pictureDialogue.show();
-    }
 
-    public void chooseImageFromGallery(){
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-        startActivityForResult(galleryIntent, GALLERY);
-    }
-
-    private void takeImageFromCamera() {
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAMERA);
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string.photo_permit),
+                    1, perms);
+        }
     }
 
 //    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data){
-//        Intent intent = new Intent(MainActivity.this, ImageRecognitionActivity.class);
-//        intent.putExtra("requestCode", requestCode);
-//        intent.putExtra("resultCode", resultCode);
-//        intent.setData(Uri);
-//        startActivity(intent);
+//    public void onStart() {
+//
+//        super.onStart();
+//        textToSpeech.speak(WcTxtNepali.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
 //    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == this.RESULT_CANCELED) {
-            return;
-        }
-        if (requestCode == GALLERY) {
-            if (data != null) {
-                Uri contentURI = data.getData();
-                Log.d("IMageUri", String.valueOf(contentURI));
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    String path = saveImage(bitmap);
-                    Toast.makeText(MainActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, ImageRecognitionActivity.class);
-                    intent.setData(contentURI);
-                    startActivity(intent);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(MainActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        } else if (requestCode == CAMERA) {
-            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-            Intent intent = new Intent(MainActivity.this, ImageRecognitionActivity.class);
-            intent.putExtra("BitmapImage", thumbnail);
-            startActivity(intent);
-            saveImage(thumbnail);
-            Toast.makeText(MainActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public String saveImage(Bitmap myBitmap) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-        File wallpaperDirectory = new File(
-                Environment.getExternalStorageDirectory() + "IMAGE_DIRECTORY");
-        // have the object build the directory structure, if needed.
-        if (!wallpaperDirectory.exists()) {
-            wallpaperDirectory.mkdirs();
-        }
-
-        try {
-            File f = new File(wallpaperDirectory, Calendar.getInstance()
-                    .getTimeInMillis() + ".jpg");
-            f.createNewFile();
-            FileOutputStream fo = new FileOutputStream(f);
-            fo.write(bytes.toByteArray());
-            MediaScannerConnection.scanFile(this,
-                    new String[]{f.getPath()},
-                    new String[]{"image/jpeg"}, null);
-            fo.close();
-            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
-
-            return f.getAbsolutePath();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return "";
-    }
 
     @Override
     public void onDestroy() {

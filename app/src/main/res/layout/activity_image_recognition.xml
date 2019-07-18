@@ -7,8 +7,41 @@
     android:layout_height="match_parent"
     tools:context=".ImageRecognitionActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/toolbar"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        android:layout_marginBottom="20dp">
 
-    <include layout="@layout/content_image_recognition" />
+        <ImageView
+            android:id="@+id/navigateBack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:foregroundGravity="center"
+            android:src="@drawable/ic_action_back"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAlignment="center"
+            android:text="@string/app_name"
+            android:textStyle="bold"
+            android:textColor="@color/textColor"
+            android:textAppearance="@style/Toolbar.TitleText"
+            android:gravity="center"
+            android:textSize="24dp" />
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <include layout="@layout/content_image_recognition"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"/>
 
 
 

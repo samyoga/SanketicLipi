@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SanketicLipi</string>
     <string name="title_activity_image_recognition">ImageRecognitionActivity</string>
+    <string name="photo_permit">App needs permission to click photos.</string>
 </resources>
