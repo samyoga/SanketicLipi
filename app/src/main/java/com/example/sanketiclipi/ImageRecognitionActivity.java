@@ -1,6 +1,7 @@
 package com.example.sanketiclipi;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -25,7 +26,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
-import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.Classifier;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.InvalidMarkException;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -48,7 +49,7 @@ public class ImageRecognitionActivity extends AppCompatActivity {
     private static final String LABEL_PATH = "label.txt";
     private static final int INPUT_SIZE = 224;
 
-    private Classifier classifier;
+    private com.example.sanketiclipi.Classifier classifier;
 
     private Executor executor = Executors.newSingleThreadExecutor();
 
@@ -72,11 +73,25 @@ public class ImageRecognitionActivity extends AppCompatActivity {
         //to load image into imageView
         requestManager = Glide.with(ImageRecognitionActivity.this);
 
-        Intent intent = getIntent();
-        Result = intent.getStringExtra("result");
-        textRecognized.setText(Result);
+//        Intent intent = getIntent();
+//        Result = intent.getStringExtra("result");
+//        textRecognized.setText(Result);
 
-//        Uri selectedImgUri = getIntent().getData();
+        Uri selectedImgUri = getIntent().getData();
+//        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImgUri);
+
+        final List<Classifier.Recognition> results;
+
+            results = classifier.recognizeImage(getApplicationContext(),selectedImgUri);
+            textRecognized.setText(results.toString());
+
+
+
+//        Log.d("valueofbitmap", String.valueOf(bitmap));
+
+
+
+
 //
 //        if (selectedImgUri != null) {
 //            Log.d("GalleryImageURI", "" + selectedImgUri);
@@ -94,25 +109,25 @@ public class ImageRecognitionActivity extends AppCompatActivity {
             }
         });
 
-//        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-//            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-//            @Override
-//            public void onInit(int status) {
-//                if (status == TextToSpeech.SUCCESS) {
-//                    int ttsLang = textToSpeech.setLanguage(Locale.forLanguageTag("hin"));
-//
-//                    if (ttsLang == TextToSpeech.LANG_MISSING_DATA
-//                            || ttsLang == TextToSpeech.LANG_NOT_SUPPORTED) {
-//                        Log.e("TTS", "The Language is not supported!");
-//                    } else {
-//                        Log.i("TTS", "Language Supported.");
-//                    }
-//                    Log.i("TTS", "Initialization success.");
-//                } else {
-//                    Toast.makeText(getApplicationContext(), "TTS Initialization failed!", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int ttsLang = textToSpeech.setLanguage(Locale.forLanguageTag("hin"));
+
+                    if (ttsLang == TextToSpeech.LANG_MISSING_DATA
+                            || ttsLang == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "The Language is not supported!");
+                    } else {
+                        Log.i("TTS", "Language Supported.");
+                    }
+                    Log.i("TTS", "Initialization success.");
+                } else {
+                    Toast.makeText(getApplicationContext(), "TTS Initialization failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 //        textRecognized.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -121,18 +136,46 @@ public class ImageRecognitionActivity extends AppCompatActivity {
 //            }
 //        });
 
-//        final Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                textToSpeech.speak(textRecognized.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
-//            }
-//        }, 800);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textToSpeech.speak(textRecognized.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
+            }
+        }, 800);
+
+        initTensorFlowAndLoadModel();
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                classifier.close();
+            }
+        });
+    }
 
-
+    private void initTensorFlowAndLoadModel() {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    classifier = TensorFlowImageClassifier.create(
+                            getAssets(),
+                            MODEL_PATH,
+                            LABEL_PATH,
+                            INPUT_SIZE,
+                            QUANT);
+                } catch (final Exception e) {
+                    throw new RuntimeException("Error initializing TensorFlow!", e);
+                }
+            }
+        });
+    }
 }
 
 
