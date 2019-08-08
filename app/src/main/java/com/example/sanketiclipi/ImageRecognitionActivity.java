@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.ibm.watson.developer_cloud.natural_language_classifier.v1.model.Classifier;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -35,10 +36,21 @@ import java.net.URI;
 import java.nio.InvalidMarkException;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import static android.media.MediaRecorder.VideoSource.CAMERA;
 
 public class ImageRecognitionActivity extends AppCompatActivity {
+
+    private static final String MODEL_PATH = "model10.tflite";
+    private static final boolean QUANT = false;
+    private static final String LABEL_PATH = "label.txt";
+    private static final int INPUT_SIZE = 224;
+
+    private Classifier classifier;
+
+    private Executor executor = Executors.newSingleThreadExecutor();
 
     ImageView loadImageView, navigateBack;
     TextToSpeech textToSpeech;

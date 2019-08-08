@@ -78,6 +78,7 @@ public class ImageClassificationAcitivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
             Uri selectedImgUri = getIntent().getData();
+            Log.d("image", String.valueOf(selectedImgUri));
 
             //convert uri to imagefile
             File auxFile = new File(selectedImgUri.getPath());
@@ -86,7 +87,9 @@ public class ImageClassificationAcitivity extends AppCompatActivity {
                     .apiKey(API_KEY)
                     .build();
 
-            VisualRecognition service = new VisualRecognition("2018-03-19", options);
+            VisualRecognition service = new VisualRecognition("2019-08-08", options);
+            service.setEndPoint("https://gateway.watsonplatform.net/visual-recognition/api");
+            service.setUsernameAndPassword("apikey", "Typ13FYgc6jYt4XAiqspPVo68_ZRwp9-OZ9XkyTIUhID");
 
             InputStream imagesStream = null;
             try {
