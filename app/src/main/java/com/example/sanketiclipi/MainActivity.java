@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                                 public void onImageSelected(Uri uri) {
                                     mSelectedImagesUri = uri;
 
-                                    Intent intent = new Intent(MainActivity.this, ImageRecognitionActivity.class);
+                                    Intent intent = new Intent(MainActivity.this, ImageClassificationAcitivity.class);
                                     intent.setData(mSelectedImagesUri);
                                     startActivity(intent);
 

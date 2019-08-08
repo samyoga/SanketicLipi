@@ -45,6 +45,7 @@ public class ImageRecognitionActivity extends AppCompatActivity {
     private static int GALLERY=1;
     private RequestManager requestManager;
     TextView textRecognized;
+    String Result;
 
 
     @Override
@@ -59,15 +60,19 @@ public class ImageRecognitionActivity extends AppCompatActivity {
         //to load image into imageView
         requestManager = Glide.with(ImageRecognitionActivity.this);
 
-        Uri selectedImgUri = getIntent().getData();
+        Intent intent = getIntent();
+        Result = intent.getStringExtra("result");
+        textRecognized.setText(Result);
 
-        if (selectedImgUri != null) {
-            Log.d("GalleryImageURI", "" + selectedImgUri);
-
-            requestManager
-                    .load(selectedImgUri)
-                    .into(loadImageView);
-        }
+//        Uri selectedImgUri = getIntent().getData();
+//
+//        if (selectedImgUri != null) {
+//            Log.d("GalleryImageURI", "" + selectedImgUri);
+//
+//            requestManager
+//                    .load(selectedImgUri)
+//                    .into(loadImageView);
+//        }
 
         navigateBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,25 +82,25 @@ public class ImageRecognitionActivity extends AppCompatActivity {
             }
         });
 
-        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                    int ttsLang = textToSpeech.setLanguage(Locale.forLanguageTag("hin"));
-
-                    if (ttsLang == TextToSpeech.LANG_MISSING_DATA
-                            || ttsLang == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        Log.e("TTS", "The Language is not supported!");
-                    } else {
-                        Log.i("TTS", "Language Supported.");
-                    }
-                    Log.i("TTS", "Initialization success.");
-                } else {
-                    Toast.makeText(getApplicationContext(), "TTS Initialization failed!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+//            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//            @Override
+//            public void onInit(int status) {
+//                if (status == TextToSpeech.SUCCESS) {
+//                    int ttsLang = textToSpeech.setLanguage(Locale.forLanguageTag("hin"));
+//
+//                    if (ttsLang == TextToSpeech.LANG_MISSING_DATA
+//                            || ttsLang == TextToSpeech.LANG_NOT_SUPPORTED) {
+//                        Log.e("TTS", "The Language is not supported!");
+//                    } else {
+//                        Log.i("TTS", "Language Supported.");
+//                    }
+//                    Log.i("TTS", "Initialization success.");
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "TTS Initialization failed!", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
 //        textRecognized.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -104,13 +109,13 @@ public class ImageRecognitionActivity extends AppCompatActivity {
 //            }
 //        });
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                textToSpeech.speak(textRecognized.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
-            }
-        }, 800);
+//        final Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                textToSpeech.speak(textRecognized.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
+//            }
+//        }, 800);
 
     }
 

@@ -24,8 +24,8 @@ android {
     }
 
     sourceSets {
-        main{
-            jniLibs.srcDirs=['Libs']
+        main {
+            jniLibs.srcDirs = ['Libs']
         }
     }
 }
@@ -44,6 +44,7 @@ dependencies {
         exclude group: "com.android.support"
     }
     implementation 'com.github.bumptech.glide:glide:4.8.0-SNAPSHOT'
-    implementation'org.tensorflow:tensorflow-lite:1.10.0'
+    implementation 'org.tensorflow:tensorflow-lite:1.10.0'
     implementation 'com.karumi:dexter:5.0.0'
+    implementation 'com.ibm.watson.developer_cloud:java-sdk:6.9.0'
 }
